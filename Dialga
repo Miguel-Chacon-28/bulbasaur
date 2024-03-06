@@ -1,0 +1,29 @@
+import os
+import subprocess
+
+nombre_proyecto = "proyecto_ejemplo"
+os.makedirs(nombre_proyecto)
+os.chdir(nombre_proyecto)
+
+with open("hola_mundo.py", "w") as archivo:
+    archivo.write('''\
+def main():
+    print("¡Hola mundo!")
+
+if __name__ == "__main__":
+    main()
+''')
+
+subprocess.run(["git", "init"])
+subprocess.run(["git", "add", "hola_mundo.py"])
+subprocess.run(["git", "commit", "-m", "Agrega script de Hola Mundo"])
+
+nombre_usuario = "tu_usuario_de_github"
+token_acceso = "tu_token_de_acceso_a_github"
+subprocess.run(["gh", "repo", "create", nombre_proyecto, "--confirm"])
+
+subprocess.run(["git", "remote", "add", "origin", f"https://github.com/{nombre_usuario}/{nombre_proyecto}.git"])
+subprocess.run(["git", "branch", "-M", "main"])
+subprocess.run(["git", "push", "-u", "origin", "main"])
+
+print("¡Proyecto creado en GitHub exitosamente!")
